@@ -1,13 +1,15 @@
 <template>
     <div class="agents">
         <v-card-title>
-            <h2 class="mr-5">Agent Status</h2>
+            <h2 class="mr-5 mb-3">Agent Status</h2>
             <v-progress-circular
-                    v-if="loading"
-                    indeterminate
-                    color="green"
+                class="mb-3"
+                v-if="loading"
+                indeterminate
+                color="green"
             ></v-progress-circular>
             <v-btn dark
+                class="mb-3"
                 v-if="!loading"
                 color="green"
                 rounded depressed
@@ -17,7 +19,7 @@
             <v-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
-                    label="Search"
+                    label="Search For Agents"
                     single-line
                     hide-details
             ></v-text-field>
@@ -54,11 +56,16 @@
             seeAgent(id){
                 this.$router.push(`/reviews/${id}`)
             },
+            /*
+            * This method sends a GET request to the protected /admin endpoint on the queueing system side.
+            * Authorization is provided through the retrieved json web token from local storage.
+            */
             getData: async function (){
                 let self=this;
                 self.loading=true;
-                console.log("Getting Data");
-                axios.get('https://esc-acorn-backend.herokuapp.com/admin')
+                let auth = (localStorage.getItem('auth'));
+                console.log(`Getting Data with auth key ${auth}`);
+                axios.get('https://esc-acorn-backend.herokuapp.com/admin', {headers: {"authorization":`Bearer ${auth}`}})
                     .then(response => {
                         let result = [];
                         for(let i in response.data)
@@ -70,7 +77,7 @@
                     .catch(error => console.log(error))
             }
         },
-        mounted() {
+        created() {
             this.getData();
         },
         data () {
@@ -99,7 +106,7 @@
 
 <style scoped>
     .agents{
-        width: 85%;
+        width: 95%;
         padding: 12px;
     }
     a {
