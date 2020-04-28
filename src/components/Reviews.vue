@@ -77,16 +77,16 @@
                 self.loading=true;
                 let auth = (localStorage.getItem('auth'));
                 console.log(`Getting Data with auth key ${auth}`);
-                axios.get(`https://still-sea-41149.herokuapp.com/api/agentStatus?rainbowId=${self.id}`,{headers: {"authorization":`Bearer ${auth}`}})
+                axios.get(`https://still-sea-41149.herokuapp.com/api/agentStatus?agentId=${self.id}`,{headers: {"authorization":`Bearer ${auth}`}})
                     .then(response => {
-                        console.log(response.data[0]);
-                        self.items=response.data[0].feedbacks;
-                        self.name=response.data[0].name;
-                        self.rating1percent=response.data[0].averageRating1/5*100;
-                        self.rating1=response.data[0].averageRating1.toFixed(2);
-                        self.rating2percent=response.data[0].averageRating2/5*100;
-                        self.rating2=response.data[0].averageRating2.toFixed(2);
-                        self.ratings=response.data[0].numberOfRating;
+                        console.log(response.data);
+                        self.items=response.data.feedbacks;
+                        self.name=response.data.name;
+                        self.rating1percent=response.data.averageRating1/5*100;
+                        self.rating1=response.data.averageRating1.toFixed(2);
+                        self.rating2percent=response.data.averageRating2/5*100;
+                        self.rating2=response.data.averageRating2.toFixed(2);
+                        self.ratings=response.data.numberOfRating;
                         self.loading=false;
                     })
                     .catch(error => console.log(error))
